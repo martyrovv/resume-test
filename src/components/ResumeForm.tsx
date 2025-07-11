@@ -1,4 +1,4 @@
-import { Select, Button, Space, Card } from "antd";
+import { Select, Button, Space, Card, Form } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { ExperienceCard } from "./Cards/ExperienceCard";
@@ -19,7 +19,7 @@ type OPTIONS = {
 
 export function ResumeForm() {
 
-    const [sections, setSections] = useState<string[]>([]);
+  const [sections, setSections] = useState<string[]>([]);
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
 
   const handleSelect = (value: string) => {
@@ -55,6 +55,7 @@ export function ResumeForm() {
           <Button type="primary" onClick={handleAddSection}>
             Add Section
           </Button>
+          <Form>
           <ul>
             {sections.map((section, index) => {
               switch (section) {
@@ -109,6 +110,7 @@ export function ResumeForm() {
               }
             })}
           </ul>
+          </Form>
         </Space>
       </div>
     )

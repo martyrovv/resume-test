@@ -10,17 +10,10 @@ type ExperienceCardType = {
 };
 
 export function ExperienceCard() {
-  const [form] = Form.useForm<ExperienceCardType>();
-
- 
   return (
-    <Form
-      form={form}
-      layout="vertical"
-      style={{ marginTop: 16 }}
-    >
+    <>
       <Form.Item
-        name="jobTitle"
+        name="experience.jobTitle"
         label="Job Title"
         rules={[{ required: true, message: "Please enter job title" }]}
       >
@@ -46,6 +39,6 @@ export function ExperienceCard() {
       <Form.Item name="summary" label="Summary">
         <Input.TextArea rows={4} />
       </Form.Item>
-    </Form>
+    </>
   );
 }

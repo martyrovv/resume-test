@@ -10,15 +10,55 @@ type OPTIONS = {
     value: string;
     label: string;
   };
+
+type ExperienceCardType = {
+  jobTitle: string;
+  company: string;
+  date: any
+  summary: string;
+};
   
+type EducationCardType = {
+    educationalInstitution: string;
+    major: string;
+    dates: any;
+};
+
   const OPTIONS: OPTIONS[] = [
     { value: "experience", label: "Experience" },
     { value: "education", label: "Education" },
     { value: "about", label: "About Yourself" },
   ];
 
-export function ResumeForm() {
+type ResumeFormType = {
+  experience: ExperienceCardType;
+  education: EducationCardType;
+}
 
+/** { 
+ *    experience: { 
+ *       jobTitle: "developer",
+ *        company: ""
+ *    },
+ *    education: {
+ *      dates: []
+ *    }
+ * } 
+ * */
+
+// type ResumeFormType = ExperienceCardType & EducationCardType;
+
+// {
+//   /** все поля из ExperienceCardType */
+//   jobTitle: "developer",
+//   company: "",
+//   /** все поля из EducationCardType */
+//   dates: [],
+// }
+
+export function ResumeForm() {
+  const [form] = Form.useForm<ResumeFormType>();
+  
   const [sections, setSections] = useState<string[]>([]);
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
 
@@ -41,6 +81,11 @@ export function ResumeForm() {
     (option) => !sections.includes(option.value)
   );
 
+  const onValuesChange = () => {
+    const values = form.getFieldsValue();
+    console.log(values);
+  };
+
 
     return (
         <div>
@@ -55,7 +100,9 @@ export function ResumeForm() {
           <Button type="primary" onClick={handleAddSection}>
             Add Section
           </Button>
-          <Form>
+          <Form form={form} 
+          onValuesChange={onValuesChange}
+          >
           <ul>
             {sections.map((section, index) => {
               switch (section) {

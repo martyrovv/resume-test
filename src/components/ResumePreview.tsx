@@ -6,7 +6,6 @@ import dayjs from 'dayjs';
 export function ResumePreview(props: ResumeFormType) {
 
   console.log('Resume Preview Props: ', props)
-  console.log(dayjs(props.education.dates[0]).format('dd-MM-yyyy'))
 
   return (
     <div className="resume-preview">
@@ -36,7 +35,7 @@ export function ResumePreview(props: ResumeFormType) {
         Major: {props.education?.major}
       </Typography.Text>
       <Typography.Text>
-        Dates: {dayjs(props.education.dates[0]).format('DD-MM-YYYY')} - {dayjs(props.education.dates[1]).format('DD-MM-YYYY')}
+        Dates: {dayjs(props.education?.dates[0]).format('DD-MM-YYYY')} - {dayjs(props.education?.dates[1]).format('DD-MM-YYYY')}
       </Typography.Text>
       </div>
 

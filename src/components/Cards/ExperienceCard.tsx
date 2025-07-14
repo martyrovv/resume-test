@@ -2,7 +2,7 @@ import { Form, Input, DatePicker} from "antd";
 
 const { RangePicker } = DatePicker;
 
-type ExperienceCardType = {
+export type ExperienceCardType = {
   jobTitle: string;
   company: string;
   date: any
@@ -10,17 +10,11 @@ type ExperienceCardType = {
 };
 
 export function ExperienceCard() {
-  const [form] = Form.useForm<ExperienceCardType>();
-
  
   return (
-    <Form
-      form={form}
-      layout="vertical"
-      style={{ marginTop: 16 }}
-    >
+    <>
       <Form.Item
-        name="jobTitle"
+        name={["experience", "jobTitle"]}
         label="Job Title"
         rules={[{ required: true, message: "Please enter job title" }]}
       >
@@ -28,7 +22,7 @@ export function ExperienceCard() {
       </Form.Item>
 
       <Form.Item
-        name="company"
+        name={["experience", "company"]}
         label="Company"
         rules={[{ required: true, message: "Please enter company name" }]}
       >
@@ -36,16 +30,18 @@ export function ExperienceCard() {
       </Form.Item>
 
       <Form.Item
-        name="date"
+        name={["experience", "dates"]}
         label="Dates"
         rules={[{ required: true, message: "Please select a date range" }]}
       >
         <RangePicker style={{ width: "100%" }} />
       </Form.Item>
 
-      <Form.Item name="summary" label="Summary">
+      <Form.Item 
+        name={["experience", "summary"]} 
+        label="Summary">
         <Input.TextArea rows={4} />
       </Form.Item>
-    </Form>
+    </>
   );
 }

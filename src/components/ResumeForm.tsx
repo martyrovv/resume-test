@@ -7,6 +7,7 @@ import { AboutYourselfCard } from "./Cards/AboutYourselfCard";
 import type { ExperienceCardType } from "./Cards/ExperienceCard";
 import type { EducationCardType } from "./Cards/EducationCard";
 import type { AboutYourselfType } from "./Cards/AboutYourselfCard";
+import { DraggableSection } from "./DraggableSection";
 
 export type ResumeFormType = {
   experience: ExperienceCardType;
@@ -29,9 +30,14 @@ type Props = {
   setData: () => {}
 }
 
+type SectionItem = {
+  id: string,
+  type: string,
+}
+
 export function ResumeForm(props: Props) {
   const [form] = Form.useForm<ResumeFormType>();
-  const [sections, setSections] = useState<string[]>([]);
+  const [sections, setSections] = useState<SectionItem[]>([]);
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
 
 
@@ -47,18 +53,33 @@ export function ResumeForm(props: Props) {
 
   const handleAddSection = () => {
     if (selectedSection !== null && selectedSection !== "") {
-      setSections([...sections, selectedSection]);
+      const newSection: SectionItem = {
+        id: crypto.randomUUID(),
+        type: selectedSection
+      };
+      setSections([...sections, newSection]);
       setSelectedSection(null);
     }
   };
 
-  const handleDeleteSection = (value: string) => {
-    setSections(sections.filter((section) => section !== value));
+  const handleDeleteSection = (id: string) => {
+    setSections(sections.filter((section) => section.id !== id));
   };
 
   const filteredOptions = OPTIONS.filter(
-    (option) => !sections.includes(option.value)
+    (option) => !sections.some((sections) => sections.type === option.value)
   );
+
+  const moveSection = (dragIndex: number, hoverIndex: number) => {
+    setSections((prevSections) => {
+      const updatedSections = [...prevSections];
+      const [removed] = updatedSections.splice(dragIndex, 1);
+      updatedSections.splice(hoverIndex, 0, removed);
+      return updatedSections;
+    });
+  };
+  
+  
 
   return (
     <>
@@ -77,54 +98,60 @@ export function ResumeForm(props: Props) {
       <Form form={form} onValuesChange={onValuesChange}>
         <ul>
           {sections.map((section, index) => {
-            switch (section) {
+            const commonProps = {
+              id: section.id,
+              index,
+              moveSection,
+            };
+
+            switch (section.type) {
               case "experience":
                 return (
-                  <li key={index}>
+                  <DraggableSection key={section.id} {...commonProps}>
                     <Card
                       title="Experience"
                       extra={
                         <DeleteOutlined
-                          onClick={() => handleDeleteSection(section)}
+                          onClick={() => handleDeleteSection(section.id)}
                           style={{ cursor: "pointer" }}
                         />
                       }
                     >
                       <ExperienceCard />
                     </Card>
-                  </li>
+                  </DraggableSection>
                 );
               case "education":
                 return (
-                  <li key={index}>
+                  <DraggableSection key={section.id} {...commonProps}>
                     <Card
                       title="Education"
                       extra={
                         <DeleteOutlined
-                          onClick={() => handleDeleteSection(section)}
+                          onClick={() => handleDeleteSection(section.id)}
                           style={{ cursor: "pointer" }}
                         />
                       }
                     >
                       <EducationCard />
                     </Card>
-                  </li>
+                  </DraggableSection>
                 );
               case "about":
                 return (
-                  <li key={index}>
+                  <DraggableSection key={section.id} {...commonProps}>
                     <Card
                       title="About Yourself"
                       extra={
                         <DeleteOutlined
-                          onClick={() => handleDeleteSection(section)}
+                          onClick={() => handleDeleteSection(section.id)}
                           style={{ cursor: "pointer" }}
                         />
                       }
                     >
                       <AboutYourselfCard />
                     </Card>
-                  </li>
+                  </DraggableSection>
                 );
             }
           })}

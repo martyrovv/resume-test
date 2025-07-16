@@ -5,7 +5,7 @@ const { RangePicker } = DatePicker;
 export type ExperienceCardType = {
   jobTitle: string;
   company: string;
-  date: any
+  dates: any
   summary: string;
 };
 

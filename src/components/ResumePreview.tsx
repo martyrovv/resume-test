@@ -3,6 +3,7 @@ import type { ResumeFormType } from "./ResumeForm";
 import dayjs from 'dayjs';
 
 
+
 export function ResumePreview(props: ResumeFormType) {
 
   console.log('Resume Preview Props: ', props)
@@ -10,6 +11,9 @@ export function ResumePreview(props: ResumeFormType) {
   return (
     <div className="resume-preview">
       <Typography.Title level={1}>Resume Preview</Typography.Title>
+
+      {props.experience && (
+        <>
       <Typography.Title level={2}>Experience: </Typography.Title>
       <div style={{display:'flex', flexDirection: 'column'}}>
       <Typography.Text>
@@ -19,13 +23,17 @@ export function ResumePreview(props: ResumeFormType) {
         Company: {props.experience?.company}
       </Typography.Text>
       <Typography.Text>
-        Date: {props.experience?.date}
+        {/* Dates: {dayjs(props.education?.dates[0]).format('DD-MM-YYYY')} - {dayjs(props.education?.dates[1]).format('DD-MM-YYYY')} */}
       </Typography.Text>
       <Typography.Text>
         Summary: {props.experience?.summary}
       </Typography.Text>
       </div>
+        </>
+      )}
       
+      {props.education && (
+        <>
       <Typography.Title level={2}>Education: </Typography.Title>
       <div style={{display:'flex', flexDirection: 'column'}}>
       <Typography.Text>
@@ -35,10 +43,14 @@ export function ResumePreview(props: ResumeFormType) {
         Major: {props.education?.major}
       </Typography.Text>
       <Typography.Text>
-        Dates: {dayjs(props.education?.dates[0]).format('DD-MM-YYYY')} - {dayjs(props.education?.dates[1]).format('DD-MM-YYYY')}
+        {/* Dates: {dayjs(props.education?.dates[0]).format('DD-MM-YYYY')} - {dayjs(props.education?.dates[1]).format('DD-MM-YYYY')} */}
       </Typography.Text>
       </div>
+        </>
+      )}
 
+      {props.about && (
+        <>
       <Typography.Title level={2}>About Yourself: </Typography.Title>
       <div style={{display:'flex', flexDirection: 'column'}}>
       <Typography.Text>
@@ -57,6 +69,8 @@ export function ResumePreview(props: ResumeFormType) {
         Introduction: {props.about?.introduction}
       </Typography.Text>
       </div>
-    </div>
+        </>
+      )}
+      </div>
   );
 }

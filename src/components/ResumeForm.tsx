@@ -65,6 +65,7 @@ export function ResumeForm(props: Props) {
   const handleDeleteSection = (id: string) => {
     setSections(sections.filter((section) => section.id !== id));
   };
+  //очистку данных формы для конкретной секции 
 
   const filteredOptions = OPTIONS.filter(
     (option) => !sections.some((sections) => sections.type === option.value)

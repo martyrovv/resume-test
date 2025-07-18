@@ -4,9 +4,7 @@ import dayjs from 'dayjs';
 
 
 
-export function ResumePreview(props: ResumeFormType) {
-
-  console.log('Resume Preview Props: ', props)
+export function ResumePreview(props: Partial<ResumeFormType>) {
 
   return (
     <div className="resume-preview">

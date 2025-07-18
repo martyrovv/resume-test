@@ -30,10 +30,10 @@ export function EducationCard() {
             </Form.Item>
 
             <Form.Item
-        name={["education", "dates"]}
-        label="Dates"
-        rules={[{ required: true, message: "Please select a date range" }]}
-      >
+              name={["education", "dates"]}
+              label="Dates"
+              rules={[{ required: true, message: "Please select a date range" }]}
+            >
         <RangePicker style={{ width: "100%" }} />
       </Form.Item>
 

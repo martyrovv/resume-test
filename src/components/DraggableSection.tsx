@@ -1,5 +1,5 @@
 import { useDrag, useDrop } from "react-dnd";
-import { ReactNode, useRef } from "react";
+import { type ReactNode, useRef } from "react";
 
 type Props = {
   id: string;

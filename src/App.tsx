@@ -8,15 +8,14 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function App() {
 
-  const [data, setData] = useState<ResumeFormType>()
-
-
+  const [data, setData] = useState<Partial<ResumeFormType>>()
+  
 
   return (
     <div style={{display:'flex'}}>
       <DndProvider backend={HTML5Backend}>
       <div style={{ width: 400, padding: '0 20px' }}>
-        <ResumeForm setData = {setData} />
+        <ResumeForm setData={setData} />
       </div>
       </DndProvider>
       <div style={{ flex: 1, padding: '0 20px' }}>

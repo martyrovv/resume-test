@@ -27,7 +27,7 @@ const OPTIONS: OPTIONS[] = [
 ];
 
 type Props = {
-  setData: () => {}
+  setData: React.Dispatch<React.SetStateAction<Partial<ResumeFormType> | undefined>>
 }
 
 export type SectionItem = {
@@ -65,7 +65,6 @@ export function ResumeForm(props: Props) {
   const handleDeleteSection = (id: string) => {
     setSections(sections.filter((section) => section.id !== id));
   };
- 
 
   const filteredOptions = OPTIONS.filter(
     (option) => !sections.some((sections) => sections.type === option.value)
@@ -97,7 +96,6 @@ export function ResumeForm(props: Props) {
         </Button>
       </Space>
       <Form form={form} onValuesChange={onValuesChange}>
-        <ul>
           {sections.map((section, index) => {
             const commonProps = {
               id: section.id,
@@ -156,7 +154,6 @@ export function ResumeForm(props: Props) {
                 );
             }
           })}
-        </ul>
       </Form>
     </>
   );

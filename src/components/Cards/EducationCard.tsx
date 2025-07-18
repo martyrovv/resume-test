@@ -5,7 +5,7 @@ const { RangePicker } = DatePicker;
 export type EducationCardType = {
     educationalInstitution: string;
     major: string;
-    dates: any;
+    dates: [string, string];
   };
 
 

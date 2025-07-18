@@ -16,7 +16,6 @@ export type ResumeFormType = {
 };
 
 type OPTIONS = {
-<<<<<<< HEAD
   value: string;
   label: string;
 };
@@ -39,61 +38,6 @@ type SectionItem = {
 export function ResumeForm(props: Props) {
   const [form] = Form.useForm<ResumeFormType>();
   const [sections, setSections] = useState<SectionItem[]>([]);
-=======
-    value: string;
-    label: string;
-  };
-
-type ExperienceCardType = {
-  jobTitle: string;
-  company: string;
-  date: any
-  summary: string;
-};
-  
-type EducationCardType = {
-    educationalInstitution: string;
-    major: string;
-    dates: any;
-};
-
-  const OPTIONS: OPTIONS[] = [
-    { value: "experience", label: "Experience" },
-    { value: "education", label: "Education" },
-    { value: "about", label: "About Yourself" },
-  ];
-
-type ResumeFormType = {
-  experience: ExperienceCardType;
-  education: EducationCardType;
-}
-
-/** { 
- *    experience: { 
- *       jobTitle: "developer",
- *        company: ""
- *    },
- *    education: {
- *      dates: []
- *    }
- * } 
- * */
-
-// type ResumeFormType = ExperienceCardType & EducationCardType;
-
-// {
-//   /** все поля из ExperienceCardType */
-//   jobTitle: "developer",
-//   company: "",
-//   /** все поля из EducationCardType */
-//   dates: [],
-// }
-
-export function ResumeForm() {
-  const [form] = Form.useForm<ResumeFormType>();
-  
-  const [sections, setSections] = useState<string[]>([]);
->>>>>>> 8436b71a69770edc28f660e34f81137cfa9b922f
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
 
 
@@ -127,7 +71,6 @@ export function ResumeForm() {
     (option) => !sections.some((sections) => sections.type === option.value)
   );
 
-<<<<<<< HEAD
   const moveSection = (dragIndex: number, hoverIndex: number) => {
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
@@ -174,44 +117,6 @@ export function ResumeForm() {
                           style={{ cursor: "pointer" }}
                         />
                       }
-=======
-  const onValuesChange = () => {
-    const values = form.getFieldsValue();
-    console.log(values);
-  };
-
-
-    return (
-        <div>
-        <Space>
-          <Select
-            value={selectedSection}
-            onChange={handleSelect}
-            placeholder="choose a section"
-            style={{ width: 160 }}
-            options={filteredOptions}
-          />
-          <Button type="primary" onClick={handleAddSection}>
-            Add Section
-          </Button>
-          <Form form={form} 
-          onValuesChange={onValuesChange}
-          >
-          <ul>
-            {sections.map((section, index) => {
-              switch (section) {
-                case "experience":
-                  return (
-                    <li key={index}>
-                      
-                    <Card title="Experience"
-                    extra={
-                      <DeleteOutlined
-                        onClick={() => handleDeleteSection(section)}
-                        style={{ cursor: 'pointer' }}
-                      />
-                    }
->>>>>>> 8436b71a69770edc28f660e34f81137cfa9b922f
                     >
                       <ExperienceCard />
                     </Card>

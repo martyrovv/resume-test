@@ -10,18 +10,11 @@ export type ExperienceCardType = {
 };
 
 export function ExperienceCard() {
-<<<<<<< HEAD
  
   return (
     <>
       <Form.Item
         name={["experience", "jobTitle"]}
-=======
-  return (
-    <>
-      <Form.Item
-        name="experience.jobTitle"
->>>>>>> 8436b71a69770edc28f660e34f81137cfa9b922f
         label="Job Title"
         rules={[{ required: true, message: "Please enter job title" }]}
       >

@@ -2,33 +2,27 @@ import { Form, Input, DatePicker } from 'antd';
 
 const { RangePicker } = DatePicker;
 
-type EducationCardType = {
+export type EducationCardType = {
     educationalInstitution: string;
     major: string;
-    dates: any;
+    dates: [string, string];
   };
 
 
 export function EducationCard() {
 
-    const [form] = Form.useForm<EducationCardType>();
-
     return (
-        <Form
-            form={form}
-            layout="vertical"
-            style={{ marginTop: 16 }}
-        >
+        <>
             <Form.Item
-                 name="educationalInstitution"
-                 label="Education Institution"
+                 name={["education", "educationalInstitution"]}
+                 label="Educational Institution"
                  rules={[{ required: true, message: "Please enter education institution" }]}
             >
                 <Input />
             </Form.Item>
 
             <Form.Item
-                 name="major"
+                 name={["education", "major"]}
                  label="Major"
                  rules={[{ required: true, message: "Please enter major" }]}
             >
@@ -36,13 +30,13 @@ export function EducationCard() {
             </Form.Item>
 
             <Form.Item
-        name="dates"
-        label="Dates"
-        rules={[{ required: true, message: "Please select a date range" }]}
-      >
+              name={["education", "dates"]}
+              label="Dates"
+              rules={[{ required: true, message: "Please select a date range" }]}
+            >
         <RangePicker style={{ width: "100%" }} />
       </Form.Item>
 
-        </Form>
+        </>
     )
 }

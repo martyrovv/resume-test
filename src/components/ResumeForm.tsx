@@ -1,26 +1,51 @@
-import { Select, Button, Space, Card } from "antd";
+import { Select, Button, Space, Card, Form } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { ExperienceCard } from "./Cards/ExperienceCard";
 import { EducationCard } from "./Cards/EducationCard";
 import { AboutYourselfCard } from "./Cards/AboutYourselfCard";
+import type { ExperienceCardType } from "./Cards/ExperienceCard";
+import type { EducationCardType } from "./Cards/EducationCard";
+import type { AboutYourselfType } from "./Cards/AboutYourselfCard";
+import { DraggableSection } from "./DraggableSection";
 
+export type ResumeFormType = {
+  experience: ExperienceCardType;
+  education: EducationCardType;
+  about: AboutYourselfType;
+};
 
 type OPTIONS = {
-    value: string;
-    label: string;
-  };
-  
-  const OPTIONS: OPTIONS[] = [
-    { value: "experience", label: "Experience" },
-    { value: "education", label: "Education" },
-    { value: "about", label: "About Yourself" },
-  ];
+  value: string;
+  label: string;
+};
 
-export function ResumeForm() {
+const OPTIONS: OPTIONS[] = [
+  { value: "experience", label: "Experience" },
+  { value: "education", label: "Education" },
+  { value: "about", label: "About Yourself" },
+];
 
-    const [sections, setSections] = useState<string[]>([]);
+type Props = {
+  setData: React.Dispatch<React.SetStateAction<Partial<ResumeFormType> | undefined>>
+}
+
+export type SectionItem = {
+  id: string,
+  type: string,
+}
+
+export function ResumeForm(props: Props) {
+  const [form] = Form.useForm<ResumeFormType>();
+  const [sections, setSections] = useState<SectionItem[]>([]);
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
+
+
+
+  const onValuesChange = () => {
+    const values = form.getFieldsValue();
+    props.setData(values);
+  };
 
   const handleSelect = (value: string) => {
     setSelectedSection(value);
@@ -28,88 +53,108 @@ export function ResumeForm() {
 
   const handleAddSection = () => {
     if (selectedSection !== null && selectedSection !== "") {
-      setSections([...sections, selectedSection]);
+      const newSection: SectionItem = {
+        id: crypto.randomUUID(),
+        type: selectedSection
+      };
+      setSections([...sections, newSection]);
       setSelectedSection(null);
     }
   };
 
-  const handleDeleteSection = (value: string) => {
-    setSections(sections.filter((section) => section !== value));
+  const handleDeleteSection = (id: string) => {
+    setSections(sections.filter((section) => section.id !== id));
   };
 
   const filteredOptions = OPTIONS.filter(
-    (option) => !sections.includes(option.value)
+    (option) => !sections.some((sections) => sections.type === option.value)
   );
 
+  const moveSection = (dragIndex: number, hoverIndex: number) => {
+    setSections((prevSections) => {
+      const updatedSections = [...prevSections];
+      const [removed] = updatedSections.splice(dragIndex, 1);
+      updatedSections.splice(hoverIndex, 0, removed);
+      return updatedSections;
+    });
+  };
+  
+  
 
-    return (
-        <div>
-        <Space>
-          <Select
-            value={selectedSection}
-            onChange={handleSelect}
-            placeholder="choose a section"
-            style={{ width: 160 }}
-            options={filteredOptions}
-          />
-          <Button type="primary" onClick={handleAddSection}>
-            Add Section
-          </Button>
-          <ul>
-            {sections.map((section, index) => {
-              switch (section) {
-                case "experience":
-                  return (
-                    <li key={index}>
-                      
-                    <Card title="Experience"
-                    extra={
-                      <DeleteOutlined
-                        onClick={() => handleDeleteSection(section)}
-                        style={{ cursor: 'pointer' }}
-                      />
-                    }
+  return (
+    <>
+      <Space>
+        <Select
+          value={selectedSection}
+          onChange={handleSelect}
+          placeholder="choose a section"
+          style={{ width: 160 }}
+          options={filteredOptions}
+        />
+        <Button type="primary" onClick={handleAddSection}>
+          Add Section
+        </Button>
+      </Space>
+      <Form form={form} onValuesChange={onValuesChange}>
+          {sections.map((section, index) => {
+            const commonProps = {
+              id: section.id,
+              index,
+              moveSection,
+            };
+
+            switch (section.type) {
+              case "experience":
+                return (
+                  <DraggableSection key={section.id} {...commonProps}>
+                    <Card
+                      title="Experience"
+                      extra={
+                        <DeleteOutlined
+                          onClick={() => handleDeleteSection(section.id)}
+                          style={{ cursor: "pointer" }}
+                        />
+                      }
                     >
                       <ExperienceCard />
                     </Card>
-                    </li>
-                  );
-                  case "education":
-                  return (
-                    <li key={index}>
-                      
-                    <Card title="Education"
-                    extra={
-                      <DeleteOutlined
-                        onClick={() => handleDeleteSection(section)}
-                        style={{ cursor: 'pointer' }}
-                      />
-                    }
+                  </DraggableSection>
+                );
+              case "education":
+                return (
+                  <DraggableSection key={section.id} {...commonProps}>
+                    <Card
+                      title="Education"
+                      extra={
+                        <DeleteOutlined
+                          onClick={() => handleDeleteSection(section.id)}
+                          style={{ cursor: "pointer" }}
+                        />
+                      }
                     >
                       <EducationCard />
                     </Card>
-                    </li>
-                  );
-                  case "about":
-                  return (
-                    <li key={index}>
-                      
-                    <Card title="About Yourself"
-                    extra={
-                      <DeleteOutlined
-                        onClick={() => handleDeleteSection(section)}
-                        style={{ cursor: 'pointer' }}
-                      />
-                    }
+                  </DraggableSection>
+                );
+              case "about":
+                return (
+                  <DraggableSection key={section.id} {...commonProps}>
+                    <Card
+                      title="About Yourself"
+                      extra={
+                        <DeleteOutlined
+                          onClick={() => handleDeleteSection(section.id)}
+                          style={{ cursor: "pointer" }}
+                        />
+                      }
                     >
                       <AboutYourselfCard />
                     </Card>
-                    </li>
-                  );
-              }
-            })}
-          </ul>
-        </Space>
-      </div>
-    )
+                  </DraggableSection>
+                );
+            }
+          })}
+      </Form>
+    </>
+  );
 }

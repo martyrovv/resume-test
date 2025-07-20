@@ -1,14 +1,25 @@
-import { ResumeForm } from "./components/ResumeForm";
+import { ResumeForm, type ResumeFormType } from "./components/ResumeForm";
 import { ResumePreview } from "./components/ResumePreview";
+import { useState } from "react";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
+
 
 function App() {
+
+  const [data, setData] = useState<Partial<ResumeFormType>>()
+  
+
   return (
     <div style={{display:'flex'}}>
-      <div>
-        <ResumeForm />
+      <DndProvider backend={HTML5Backend}>
+      <div style={{ width: 400, padding: '0 20px' }}>
+        <ResumeForm setData={setData} />
       </div>
-      <div>
-        <ResumePreview />
+      </DndProvider>
+      <div style={{ flex: 1, padding: '0 20px' }}>
+        <ResumePreview {...data}/>
       </div>
     </div>
   );
